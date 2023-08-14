@@ -11,16 +11,20 @@ axios(url)
     .then(response => {
         const html = response.data
         const $ = cheerio.load(html)
-        const productName = []
-        const prices = []
+        const products = []
 
         $('.catalog-productCard-module__productCard').each(function() {
-            const text = $(this).text()
-            if (text.includes('$')) {
-                prices.push(text)
-            }
+
+            const productName = $(this).find('.product-name span[data-aui="product-card-name"]').text().trim();
+            const currentPrice = $(this).find('.product-price-text-wrapper').text().trim().split('$');
+
+            products.push({
+                productName: productName,
+                currentPrice: currentPrice[currentPrice.length - 1]
+            });
+
         })
-        console.log(prices)
+        console.log(products)
     }).catch(err => console.log(err))
 
 app.listen(PORT, () => console.log(`Server is running on PORT ${PORT}`))
