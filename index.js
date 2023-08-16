@@ -40,19 +40,22 @@ async function fetchUrls() {
 async function fetchProducts() {
     for (const urlSuffix of foundUrls) {
         try {
-            const response = await axios(`https://www.abercrombie.com${urlSuffix}`);
+            const itemLink = `https://www.abercrombie.com${urlSuffix}`
+            const response = await axios(itemLink);
             const html = response.data;
             const $ = cheerio.load(html);
 
-            $('.product-below-image-info-section').each(function () {
+            $('.product-page__info-container').each(function () {
                 const productName = $(this).find('.product-title-main-header').text().trim();
-                const productColor = $(this).find('strong:contains("Color:")').next('span').text().trim();
+
+                const productURL = itemLink;
+
                 const productPrice = $(this).find('.product-price-text-wrapper').text().trim().split('$');
 
                 products.push({
-                    productName: productName,
-                    productColor: productColor,
-                    productPrice: productPrice[productPrice.length - 1]
+                    Item: productName,
+                    Link: productURL,
+                    Price: productPrice[productPrice.length - 1]
                 });
             });
         } catch (err) {
