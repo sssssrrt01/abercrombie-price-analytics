@@ -1,27 +1,34 @@
 import json
-import pyodbc
+import psycopg2
 from datetime import date
-
-username = 'haotinghuang'
-password = '1549015@znftsgntxd'
 host = 'localhost'
+password = '1549015@znftsgntxd'
 port = '8001'
 server = 'abercrombie-database'
 database = 'haotinghuang'
-driver = 'ODBC Driver 18 for SQL Server'
+table_name = 'product'
 today_date = date.today()
 
+con = psycopg2.connect(
+            host = host,
+            database = database,
+            user = "postgres",
+            password = password,
+            port = port
+            )
 
+
+cur = con.cursor()
 
 with open('data.json', 'r') as infile:
     json_data = json.load(infile) 
+    for item in json_data:
+        insert_query = "INSERT INTO " + table_name + "(item, link, price, date) VALUES (%s, %s, %s, %s) RETURNING id"
+        data = (item["productName"], item["productLink"], item["productPrice"], today_date)
+
+        cur.execute(insert_query, data)
 
 
-connection_string = f'DRIVER={driver};SERVER=localhost;DATABASE={database};UID={username};PWD={password}'
-
-connection = pyodbc.connect(connection_string)
-cursor = connection.cursor()
-
-
-# for item in json_data:
-#     cursor.execute("INSERT INTO 
+con.commit()
+cur.close()
+con.close()
