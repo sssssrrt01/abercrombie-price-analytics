@@ -11,6 +11,7 @@ const mainUrl = 'https://www.abercrombie.com/shop/us/mens';
 const foundUrls = [];
 
 const filePath = 'data.json';
+
 async function fetchUrls() {
     try {
         const response = await axios(mainUrl);
@@ -18,27 +19,24 @@ async function fetchUrls() {
         const $ = cheerio.load(html);
         const pageCount = $('.page-indicator div[aria-live="assertive"]').text().trim().split(' ')[2];
 
-        const urlFetchPromises = [];
         for (let i = 1; i <= pageCount; i++) {
             try {
-                const promise = axios(`${mainUrl}?filtered=true&rows=90&start=${(i * 90) - 90}`);
-                urlFetchPromises.push(promise);
+                const url = `${mainUrl}?filtered=true&rows=90&start=${(i * 90) - 90}`;
+                const response = await axios(url);
+                const html = response.data;
+                const $ = cheerio.load(html);
+
+                $('.catalog-productCard-module__productCard').each(function () {
+                    const href = $(this).find('a').attr('href');
+                    foundUrls.push(href);
+                });
+
+                await new Promise(resolve => setTimeout(resolve, 2000));
+
             } catch (err) {
                 console.log(err);
             }
         }
-
-        const urlResponses = await Promise.all(urlFetchPromises);
-
-        urlResponses.forEach(response => {
-            const html = response.data;
-            const $ = cheerio.load(html);
-
-            $('.catalog-productCard-module__productCard').each(function () {
-                const href = $(this).find('a').attr('href');
-                foundUrls.push(href);
-            });
-        });
 
         console.log(foundUrls);
     } catch (err) {
@@ -82,6 +80,9 @@ async function fetchProducts() {
                     console.error(`Error appending to ${filePath}: `, error);
                 }
             });
+
+            await new Promise(resolve => setTimeout(resolve, 1000));
+
         } catch (err) {
             console.log(err);
         }
