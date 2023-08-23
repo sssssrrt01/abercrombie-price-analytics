@@ -61,9 +61,9 @@ async function fetchProducts() {
                 const productPrice = $(this).find('.product-price-text-wrapper').text().trim().split('$');
 
                 const productInfo = {
-                    Item: productName,
-                    Link: productURL,
-                    Price: productPrice[productPrice.length - 1]
+                    productName: productName,
+                    productLink: productURL,
+                    productPrice: productPrice[productPrice.length - 1]
                 };
 
                 const jsonData = JSON.stringify(productInfo, null, 2);
