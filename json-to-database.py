@@ -1,6 +1,7 @@
 import json
 import psycopg2
 from datetime import date
+
 host = 'localhost'
 password = '1549015@znftsgntxd'
 port = '8001'
