@@ -38,7 +38,8 @@ async function fetchUrls() {
             }
         }
 
-        console.log(foundUrls);
+        const jsonLinks = JSON.stringify(foundUrls, null, 2);
+        fs.writeFileSync('links.json', jsonLinks);
     } catch (err) {
         console.log(err);
     }
@@ -91,12 +92,12 @@ async function fetchProducts() {
 
 async function startApp() {
 
-    fs.writeFileSync(filePath, '[');
+    // fs.writeFileSync(filePath, '[');
 
     await fetchUrls();
-    await fetchProducts();
+    // await fetchProducts();
 
-    fs.appendFileSync(filePath, ']');
+    // fs.appendFileSync(filePath, ']');
 
 
     app.listen(PORT, () => console.log(`Server is running on PORT ${PORT}`));

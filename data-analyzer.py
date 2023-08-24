@@ -1,6 +1,7 @@
 import pandas as pd
 import numpy as np
 import psycopg2
+from datetime import date
 
 host = 'localhost'
 password = '1549015@znftsgntxd'
@@ -8,6 +9,7 @@ port = '8001'
 server = 'abercrombie-database'
 database = 'haotinghuang'
 table_name = 'product'
+today_date = date.today()
 
 con = psycopg2.connect(
             host = host,
@@ -39,9 +41,9 @@ lowest_price = df.groupby('link').agg(
     lowest_price=('price', 'min')       # Calculate the min of prices
 )
 
+today_price = df[df.get('date') == today_date]
 
-print(df)
-print(average_price)
-print(lowest_price)
+count = df.groupby('link').count().sort_values('item', ascending=False).iloc[1]
+print(count)
 
 con.close()
