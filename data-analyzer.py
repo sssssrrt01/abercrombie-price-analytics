@@ -43,7 +43,7 @@ lowest_price = df.groupby('link').agg(
 
 today_price = df[df.get('date') == today_date]
 
-count = df.groupby('link').count().sort_values('item', ascending=False).iloc[1]
+count = df.groupby('link').count().sort_values('item', ascending=False).iloc[0]
 print(count)
 
 con.close()
