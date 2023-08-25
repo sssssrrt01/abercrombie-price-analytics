@@ -31,6 +31,9 @@ for elt in cur.description:
 df = pd.DataFrame(data=data, columns=cols)
 df = df.set_index('id')
 
+df = df.drop_duplicates()
+print(df)
+
 average_price = df.groupby('link').agg(
     item_name=('item', 'first'),  # Preserve the item_name
     mean_price=('price', 'mean')       # Calculate the mean of prices
@@ -43,7 +46,5 @@ lowest_price = df.groupby('link').agg(
 
 today_price = df[df.get('date') == today_date]
 
-count = df.groupby('link').count().sort_values('item', ascending=False).iloc[0]
-print(count)
 
 con.close()
