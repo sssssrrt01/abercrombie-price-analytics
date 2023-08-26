@@ -32,7 +32,6 @@ df = pd.DataFrame(data=data, columns=cols)
 df = df.set_index('id')
 
 df = df.drop_duplicates()
-print(df)
 
 average_price = df.groupby('link').agg(
     item_name=('item', 'first'),  # Preserve the item_name

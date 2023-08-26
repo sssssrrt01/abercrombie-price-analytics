@@ -2,9 +2,7 @@ const PORT = 8000;
 const fs = require('fs');
 const axios = require('axios');
 const cheerio = require('cheerio');
-const express = require('express');
 
-const app = express();
 
 const mainUrl = 'https://www.abercrombie.com/shop/us/mens';
 
@@ -99,7 +97,7 @@ async function startApp() {
 
     fs.appendFileSync(filePath, ']');
 
-    app.listen(PORT, () => console.log(`Server is running on PORT ${PORT}`));
 }
 
 startApp();
+process.exit();
