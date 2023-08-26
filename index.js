@@ -18,6 +18,7 @@ async function fetchUrls() {
         const pageCount = $('.page-indicator div[aria-live="assertive"]').text().trim().split(' ')[2];
 
         for (let i = 1; i <= pageCount; i++) {
+            console.log('hi! I am running!')
             try {
                 const url = `${mainUrl}?filtered=true&rows=90&start=${(i * 90) - 90}`;
                 const response = await axios(url);
@@ -100,4 +101,3 @@ async function startApp() {
 }
 
 startApp();
-process.exit();
